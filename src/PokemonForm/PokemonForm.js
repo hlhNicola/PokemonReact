@@ -29,3 +29,5 @@ const PokemonForm = () => {
     )
 }
 
+
+export default PokemonForm

@@ -8,7 +8,7 @@ export const generateID = () => {
     const b = Math
         .random()
         .toString(36)
-        subString(2, 15)
+        .subString(2, 15)
 
     return a + b
 }

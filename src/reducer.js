@@ -1,17 +1,6 @@
-export const CAPTURE = 'CAPTURE';
-export const RELEASE = 'RELEASE';
+import { useReducer } from 'react';
+import { CAPTURE, RELEASE, ADD_POKEMON, ADD_POKEMONS } from './actions';
 
-
-const defaultState = {
-    pokemons: [
-        { id: 1, name: 'Bulbasaur'},
-        { id: 2, name: 'Charmander'},
-        { id: 3, name: 'Squirtle'}
-    ],
-    capturedPokemons: []
-};
-
-const [state, dispatch] = useReducer(pokemonReducer, defaultState);
 
 const getPokemonsList = (pokemons, capturedPokemon) => {
     pokemons.filter((pokemon) => {
@@ -39,20 +28,33 @@ const releasePokemon = (pokemon, state) => {
 
 const addPokemon = (pokemon, state) => {
     return {
-        ...state,
-        pokemons:[...state.pokemons, pokemon]
+        pokemons:[...state.pokemons, pokemon],
+        capturedPokemons: state.capturedPokemons
     }
 }
 
+const addPokemons = (pokemons, state) => ({
+    pokemons: pokemons,
+    capturedPokemons: state.capturedPokemons
+})
+
 const pokemonReducer = (state, action) => {
     switch (action.type) {
-        case 'CAPTURE':
+        case CAPTURE:
             return capturePokemon(action.pokemon, state)
-        case 'RELEASE':
+        case RELEASE:
             return releasePokemon(action.pokemon, state)
-        case 'ADD_POKEMON':
+        case ADD_POKEMON:
             return addPokemon(action.pokemon, state)
+        case ADD_POKEMONS:
+            return addPokemons(action.pokemon, state)
         default:
             return state;
     }
 }
+
+export const usePokemonReducer = () => 
+    useReducer(pokemonReducer, {
+        pokemons: [],
+        capturePokemons: []
+    })
